@@ -1,0 +1,6 @@
+name: Minecraftchair
+version: ${project.version}
+main: smpmood.chair.minecraftchair.Minecraftchair
+api-version: 1.16
+authors: [ Maxii ]
+description: Plugin um sich auf minecraft Stairs zu setzen.
