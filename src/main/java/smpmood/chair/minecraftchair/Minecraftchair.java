@@ -1,5 +1,6 @@
 package smpmood.chair.minecraftchair;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Directional;
@@ -20,15 +21,22 @@ public final class Minecraftchair extends JavaPlugin implements Listener {
     public static Minecraftchair Instance;
     private static List<Material> halfBlockTypes = Arrays.asList(new Material[]{Material.ACACIA_STAIRS, Material.BIRCH_STAIRS, Material.BRICK_STAIRS, Material.COBBLESTONE_STAIRS,
             Material.DARK_OAK_STAIRS, Material.JUNGLE_STAIRS, Material.NETHER_BRICK_STAIRS, Material.PURPUR_STAIRS, Material.QUARTZ_STAIRS, Material.SMOOTH_QUARTZ_STAIRS, Material.RED_SANDSTONE_STAIRS,
-            Material.SANDSTONE_STAIRS, Material.SMOOTH_SANDSTONE_STAIRS, Material.SPRUCE_STAIRS, Material.OAK_STAIRS, Material.BLACKSTONE_STAIRS, Material.POLISHED_BLACKSTONE_BRICK_STAIRS, Material.POLISHED_BLACKSTONE_STAIRS});
+            Material.SANDSTONE_STAIRS, Material.SMOOTH_SANDSTONE_STAIRS, Material.SPRUCE_STAIRS, Material.OAK_STAIRS, Material.BLACKSTONE_STAIRS, Material.POLISHED_BLACKSTONE_BRICK_STAIRS, Material.POLISHED_BLACKSTONE_STAIRS,
+            Material.DARK_PRISMARINE_STAIRS, Material.PRISMARINE_BRICK_STAIRS, Material.PRISMARINE_STAIRS, Material.SMOOTH_RED_SANDSTONE_STAIRS, Material.CRIMSON_STAIRS, Material.POLISHED_ANDESITE_STAIRS, Material.POLISHED_DIORITE_STAIRS,
+            Material.ANDESITE_STAIRS, Material.DIORITE_STAIRS, Material.GRANITE_STAIRS, Material.STONE_STAIRS, Material.STONE_BRICK_STAIRS, Material.MOSSY_COBBLESTONE_STAIRS, Material.MOSSY_STONE_BRICK_STAIRS, Material.RED_NETHER_BRICK_STAIRS,
+            Material.WARPED_STAIRS, Material.END_STONE_BRICK_STAIRS});
 
     public Minecraftchair() {Instance = this;}
 
+    public void log(String text) {
+        Bukkit.getConsoleSender().sendMessage(PREFIX + text);
+    }
 
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(this, this);
 
+        log("Chairs sitzbereit");
     }
 
     @Override
