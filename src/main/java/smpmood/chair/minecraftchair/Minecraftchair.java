@@ -1,27 +1,18 @@
 package smpmood.chair.minecraftchair;
 
 import org.bukkit.Material;
-import org.bukkit.block.data.type.Stairs;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.vehicle.VehicleCollisionEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.block.Action;
-import org.bukkit.Bukkit;
-import org.bukkit.event.Event;
-import org.bukkit.event.block.BlockEvent;
-import java.sql.Array;
-import org.bukkit.entity.Minecart;
-import org.bukkit.entity.minecart.*;
 import org.bukkit.World;
 import org.bukkit.Location;
-import org.bukkit.util.Vector;
-
+import org.spigotmc.event.entity.EntityDismountEvent;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public final class Minecraftchair extends JavaPlugin implements Listener {
 
@@ -47,66 +38,49 @@ public final class Minecraftchair extends JavaPlugin implements Listener {
 
 
     @EventHandler
-    public void onPlayerClick(PlayerInteractEvent event) throws InterruptedException {
+    public void onPlayerClick(PlayerInteractEvent event){
 
         Player p = event.getPlayer();
         if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             if (halfBlockTypes.contains(event.getClickedBlock().getType())){
-                /*new Thread(() -> {
-                    while(event.getClickedBlock() != null) {
-                        p.sendMessage(PREFIX + "pixel ist gemein!");
-                        /*if (as.getPassenger() == null) {
-                            as.remove();
-                            break;
-                        }
+                if ((event.getPlayer().getInventory().getItemInMainHand().getType() == Material.AIR) && (event.getPlayer().getInventory().getItemInOffHand().getType() == Material.AIR)) {
+                Location loc = event.getClickedBlock().getLocation();
+                World world = event.getPlayer().getWorld();
+                Location loc2 = new Location(world, loc.getX() + 0.5, loc.getY() - 1.15, loc.getZ() + 0.5);
 
+                        ArmorStand as = world.spawn(loc2, ArmorStand.class);
+                        Location armorstandLocation = as.getLocation();
+                        BlockFace blockFace = ((Directional) event.getClickedBlock().getBlockData()).getFacing();
 
+                        if(blockFace == BlockFace.NORTH)
+                            armorstandLocation.setYaw(0);
+                        else if(blockFace == BlockFace.EAST)
+                            armorstandLocation.setYaw(90);
+                        else if(blockFace == BlockFace.SOUTH)
+                            armorstandLocation.setYaw(180);
+                        else if(blockFace == BlockFace.WEST)
+                            armorstandLocation.setYaw(270);
 
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-
-
-
-                    }
-
-
-
-
-                }).start();
-
-                 */
-
-                if (event.getHand().equals(EquipmentSlot.HAND)) {
-                    Location loc = event.getClickedBlock().getLocation();
-                    World world = event.getPlayer().getWorld();
-                    Location loc2 = new Location(world,loc.getX()+0.5, loc.getY()-1.15, loc.getZ()+0.5);
-                    ArmorStand as = world.spawn(loc2, ArmorStand.class);
-                    as.setInvulnerable(true);
-                    as.setSilent(true);
-                    as.addPassenger(p);
-                    as.setGravity(false);
-                    as.setInvisible(true);
-                    new Thread(() -> {
-                        while(as != null) {
-                            if (as.getPassenger() == null) {
-                                as.remove();
-                                break;
-                            }
-                            try {
-                                Thread.sleep(10);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    }).start();
-
-                   }
+                        as.teleportAsync(armorstandLocation);
+                        as.setInvulnerable(true);
+                        as.setSilent(true);
+                        as.addPassenger(p);
+                        as.setGravity(false);
+                        as.setInvisible(true);
+                 }
                 }
             }
+        }
+
+        @EventHandler
+        public void onLeaveEntity(EntityDismountEvent event){
+
+        if(!(event.getEntity() instanceof Player)) return;
+        if(!(event.getDismounted().getType() == EntityType.ARMOR_STAND)) return;
+
+        ArmorStand armorStand = (ArmorStand) event.getDismounted();
+
+        if(!armorStand.isInvisible()) return;
+        armorStand.remove();
         }
     }
