@@ -51,7 +51,7 @@ public final class Minecraftchair extends JavaPlugin implements Listener {
         Player p = event.getPlayer();
         if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             if (halfBlockTypes.contains(event.getClickedBlock().getType())){
-                if ((event.getPlayer().getInventory().getItemInMainHand().getType() == Material.AIR) && (event.getPlayer().getInventory().getItemInOffHand().getType() == Material.AIR)) {
+                if (!(event.getPlayer().getInventory().getItemInMainHand().getType().isBlock())) {
                 Location loc = event.getClickedBlock().getLocation();
                 World world = event.getPlayer().getWorld();
                 Location loc2 = new Location(world, loc.getX() + 0.5, loc.getY() - 1.15, loc.getZ() + 0.5);
