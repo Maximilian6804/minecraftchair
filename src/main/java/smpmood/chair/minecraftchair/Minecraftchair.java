@@ -36,7 +36,7 @@ public final class Minecraftchair extends JavaPlugin implements Listener {
     public void onEnable() {
         getServer().getPluginManager().registerEvents(this, this);
 
-        log("Chairs sitzbereit");
+        log("Chairs sind sitzbereit");
     }
 
     @Override
